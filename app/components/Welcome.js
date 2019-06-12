@@ -1,32 +1,76 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import { Card, Text, ListItem } from 'react-native-elements'
 
-class Welcome extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			withdrawalTransactions: [] // for now, we leave it at this. later, we use async storage to get things going
-		}
-	}
-	render() {
-		return (
-			<View style={{backgroundColor: '#D88F7F', height:'100%'}}>
-				<Card title='All ATM Withdrawal' containerStyle={{ backgroundColor: '#DC7F6B' }}>
-				<Text>
-							Here, you see all the withdrawals you've made. When you make a withdrawal from the ATM, its automatically updated here.
-					</Text>
-					<Card>
-						{this.state.withdrawalTransactions.length === 0 ? <Text>Oops! You don't have any recent withdrawal transaction.</Text> : this.state.withdrawalTransactions.map((x, y) => {
-							return (
-								<ListItem key={y} title='Withdrawn &#8358;5000 from --JAIZ BANK.....' />
-							)
-						})}
-					</Card>
-				</Card>
-			</View>
-		)
-	}
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { NavigationActions, StackActions } from 'react-navigation'
+import AsyncStorage from '@react-native-community/async-storage'
+
+const instructions = `Track your spending without really doing much! The hardest part is allowing Agbowo read your messages! Don't worry, no data is collected and sent to an external server🙃`
+export default class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isNew: false
+    }
+
+    this.bootstrap()
+  }
+
+  async componentDidMount() {
+    await AsyncStorage.setItem('isNew', 'true')
+  }
+
+  bootstrap = async () => {
+    const token = await AsyncStorage.getItem('isNew')
+    this.props.navigation.navigate(token ? 'Home' : 'Welcome')
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>Thanks for checking out Agbowo!</Text>
+        <Text style={styles.instructions}>Electronic spending tracking done right!</Text>
+        <Text style={styles.instructions}>{instructions}</Text>
+
+        <TouchableOpacity style={styles.nextButton} onPress={() => this.props.navigation.navigate('Home')}>
+          <Text style={{ color: 'white' }}>Okay, Dope! 👍</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 
-export default Welcome
+const resetAction = StackActions.reset({
+  index: 0,
+  actions: [NavigationActions.navigate({ routeName: 'Welcome' })]
+});
+
+
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#322827'
+  },
+  welcome: {
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: 'white',
+    marginBottom: 5,
+  },
+
+  nextButton: {
+    alignItems: 'center',
+    backgroundColor: '#191413',
+    padding: 10,
+    marginTop: 30,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0
+  }
+});
