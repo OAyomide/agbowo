@@ -1,74 +1,32 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Easing, Animated } from 'react-native'
-import HomeComponent from './app/components/Home'
-import WelcomeScreen from './app/components/Welcome'
+import { createAppContainer, createStackNavigator } from 'react-navigation'
 
+import { AppNavigator, WelcomeNavigator, NavigationConfig } from './app/components/Navigator'
 
-import { createStackNavigator, createAppContainer } from 'react-navigation'
-
-
-const FadeTransition = (index, position) => {
-  const sceneRange = [index - 1, index]
-  const outputOpacity = [0, 1]
-  const transition = position.interpolate({
-    inputRange: sceneRange,
-    outputRange: outputOpacity
-  });
-  return {
-    opacity: transition
+const AppContainer = createAppContainer(createStackNavigator(
+  {
+    WelcomeLoading: WelcomeNavigator,
+    App: AppNavigator
+  }, {
+    headerMode: 'none'
   }
-}
-
-const NavigationConfig = () => {
-  return {
-    transitionSpec: {
-      duration: 650,
-      easing: Easing.out(Easing.poly(4)),
-      timing: Animated.timing,
-      useNativeDriver: true,
-    },
-    screenInterpolator: (screenProps) => {
-      const position = screenProps.position;
-      const scene = screenProps.scene
-      const index = scene.index
-
-      return FadeTransition(index, position)
-    }
-  }
-}
-
+), {
+  initialRouteName: 'Home'
+}, NavigationConfig)
 
 class App extends Component {
-  static navigationOptions = {
-    title: 'Agbowo Home',
-    header: null
+  constructor(props) {
+    super(props)
+    this.state = {
+      isNewUser: false
+    }
   }
-
-
   render() {
     return (
-      <View>
-        <HomeComponent/>
-      </View>
+      <AppContainer/>
     )
   }
 }
 
-const RootStack = createStackNavigator({
-  Welcome: {
-    screen: WelcomeScreen
-  },
-  Home: {
-    screen: HomeComponent,
-  }
-}, {
-  initialRouteName: 'Home',
-  transitionConfig: NavigationConfig
-})
+export default App
 
-export default createAppContainer(RootStack)
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#322827',
-  }
-});
