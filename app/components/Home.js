@@ -35,7 +35,7 @@ class Welcome extends Component {
 					}
 				})
 				console.log(`NUMBER OF RECENT TRANSACTIONS::`, gtbankMessages.length)
-				// this.setState({ withdrawalTransactions: gtbankMessages })
+				this.setState({ withdrawalTransactions: gtbankMessages })
 			})
 		}
 		this.setState({ hasPermissions: hasPermissions })
@@ -96,11 +96,8 @@ class Welcome extends Component {
 	}
 
 	render() {
-		console.log(`SELECTIONS ARE::`, this.state.withdrawalTransactions.length)
 		return (
-			<View style={{ backgroundColor: '#D88F7F', height: '100%'}}>
-				<ScrollView>
-
+			<ScrollView style={{ backgroundColor: '#D88F7F', height: '100%' }}>
 				<Card title='All ATM Withdrawal' containerStyle={{ backgroundColor: '#DC7F6B' }}>
 					<Text>
 						Here, you see all the withdrawals you've made. When you make a withdrawal from the ATM, its automatically updated here.
@@ -119,10 +116,8 @@ class Welcome extends Component {
 					await this.HandlePermissionAccess()
 				}}>
 					<Text style={{ color: 'white' }}>Authorize and Add transactions</Text>
-				</TouchableOpacity> : <Text/>}
-
-				</ScrollView>
-			</View>
+				</TouchableOpacity> : <Text />}
+			</ScrollView>
 		)
 	}
 }
