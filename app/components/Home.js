@@ -15,6 +15,10 @@ class Welcome extends Component {
 	}
 
 	async componentDidMount() {
+		// StackActions.reset({
+		// 	index: 0,
+		// 	actions: [NavigationActions.navigate({ routeName: 'Home' })]
+		// });
 		const hasPermissions = await this.checkPermissions()
 		console.log(`HAS NECESSARY PERMISSIONS::`, hasPermissions)
 

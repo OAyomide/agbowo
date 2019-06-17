@@ -1,4 +1,4 @@
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator, NavigationActions } from 'react-navigation'
 import { Easing, Animated } from 'react-native'
 import WelcomeComponent from './Welcome'
 import HomeComponent from './Home'
@@ -36,13 +36,18 @@ export const NavigationConfig = () => {
 
 export const AppNavigator = createStackNavigator({
   Home: {
-    screen: HomeComponent,
-    header: null
+		screen: HomeComponent,
+		navigationOptions: {
+			headerLeft: null
+		}
   }
 })
 
 export const WelcomeNavigator = createStackNavigator({
   Welcome: {
-    screen: WelcomeComponent
+		screen: WelcomeComponent,
+		navigationOptions: {
+			header: null
+		}
   }
 })
