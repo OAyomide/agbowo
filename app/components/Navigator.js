@@ -41,8 +41,8 @@ export const AppNavigator = createStackNavigator({
   }
 })
 
-  export const WelcomeNavigator = createStackNavigator({
-    Welcome: {
-      screen: WelcomeComponent
-    }
-  })
+export const WelcomeNavigator = createStackNavigator({
+  Welcome: {
+    screen: WelcomeComponent
+  }
+})
