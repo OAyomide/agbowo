@@ -2,7 +2,7 @@ import { createStackNavigator, NavigationActions } from 'react-navigation'
 import { Easing, Animated } from 'react-native'
 import WelcomeComponent from './Welcome'
 import HomeComponent from './Home'
-
+import SelectBankComponent from './Bank'
 
 const FadeTransition = (index, position) => {
   const sceneRange = [index - 1, index]
@@ -38,9 +38,16 @@ export const AppNavigator = createStackNavigator({
   Home: {
 		screen: HomeComponent,
 		navigationOptions: {
-			headerLeft: null
+			headerLeft: null,
+			header: null
 		}
-  }
+	},
+	BankSelection: {
+		screen: SelectBankComponent,
+		navigationOptions: {
+			header: null
+		}
+	}
 })
 
 export const WelcomeNavigator = createStackNavigator({
