@@ -12,7 +12,7 @@ const resetAction = StackActions.reset({
 	index: 0,
 	actions: [
 		NavigationActions.navigate({
-			routeName: "App"
+			routeName: "SelectBank"
 		})
 	]
 });
@@ -49,7 +49,20 @@ export default class App extends Component {
 	}
 	bootstrap = async () => {
 		const token = await AsyncStorage.getItem('isNew')
-		// this.props.navigation.navigate(token ? 'Home' : 'Welcome')
+		if (!token) {
+			this.props.navigation.dispatch(StackActions.reset({
+				index: 0,
+				actions: [NavigationActions.navigate({
+					routeName: "WelcomeLoading"
+				})]
+			}))
+		}
+		this.props.navigation.dispatch(StackActions.reset({
+			index: 0,
+			actions: [NavigationActions.navigate({
+				routeName: "App"
+			})]
+		}))
 	}
 
 	renderOnboardingScreens = () => {

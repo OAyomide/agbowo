@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import SelectBank from './Bank'
 import Withdrawals from './transactions/Withdrawals'
 import AsyncStorage from '@react-native-community/async-storage';
+import { StackActions } from 'react-navigation';
 
 class Welcome extends Component {
 	constructor(props) {
@@ -14,6 +15,7 @@ class Welcome extends Component {
 	}
 
 	async componentDidMount() {
+		console.log(`PROPS IN HOME ARE::`, this.props)
 		const selectedBank = await AsyncStorage.getItem('selectedBank')
 		if (selectedBank) {
 			// the user hasnt selected a bank (i.e part of the onboarding flow)

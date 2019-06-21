@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { View, Picker, TouchableOpacity, StyleSheet, StatusBar, ToastAndroid } from 'react-native'
 import { Card, Text, ListItem } from 'react-native-elements'
+import AsyncStorage from '@react-native-community/async-storage';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 
 class SelectBank extends Component {
@@ -19,11 +21,24 @@ class SelectBank extends Component {
 
   componentDidMount() {
     StatusBar.setBarStyle('dark-content', true)
-  }
+	}
+	
+	handleGotoNextScreen = async () => {
+		await AsyncStorage.setItem('selectedBank', this.state.selection)
+		this.props.navigation.dispatch(StackActions.reset({
+			index: 0,
+			actions: [
+				NavigationActions.navigate({
+					routeName: 'App'
+				})
+			]
+		}))
+	}
+
 
   renderNextButton() {
     return(
-      <TouchableOpacity style={styles.nextButton}>
+      <TouchableOpacity style={styles.nextButton} onPress={async () => await this.handleGotoNextScreen()}>
           <Text style={{fontSize: 20, color: 'black' }}>Next</Text>
         </TouchableOpacity>
     )

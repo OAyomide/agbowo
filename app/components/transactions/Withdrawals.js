@@ -3,18 +3,21 @@ import { View, TouchableOpacity, StyleSheet, ToastAndroid, PermissionsAndroid, S
 import { Card, Text, ListItem } from 'react-native-elements'
 import SmsAndroid from 'react-native-get-sms-android'
 import _ from 'lodash'
+import AsyncStorage from '@react-native-community/async-storage';
 
 class Withdrawals extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			withdrawalTransactions: [], // for now, we leave it at this. later, we use async storage to get things going,
-			hasPermissions: false
+			hasPermissions: false,
+			userBank: ''
 		}
 	}
 
 	async componentDidMount() {
 		const hasPermissions = await this.checkPermissions()
+		const userBank = await AsyncStorage.getItem('selectedBank') // we assume this will always be present since its created when the user first interacts with our app
 		console.log(`HAS NECESSARY PERMISSIONS::`, hasPermissions)
 
 		if (hasPermissions) {
@@ -28,7 +31,7 @@ class Withdrawals extends Component {
 				const all = JSON.parse(list)
 				// console.log(`LIST OF SMS FROM DEVICE IS`, all)
 				const gtbankMessages = _.filter(all, x => {
-					if (x.address === 'GTBank') {
+					if (x.address === userBank) {
 						console.log(`EACH GTBANK MESSAGE OBJ ADDRESS ISS:::`, x.address)
 						return x
 					}
@@ -105,7 +108,7 @@ class Withdrawals extends Component {
 					<Card>
 						{this.state.withdrawalTransactions.length === 0 ? this.NoPreviousTransactions() : this.state.withdrawalTransactions.map((x, y) => {
 							return (
-								<ListItem key={y} title='Withdrawn &#8358;5000 from --JAIZ BANK.....' />
+								<ListItem key={y} title={x.body} />
 							)
 						})}
 					</Card>
@@ -115,6 +118,7 @@ class Withdrawals extends Component {
 					ToastAndroid.show('You want to authorize and add new transactions', ToastAndroid.SHORT)
 					await this.HandlePermissionAccess()
 				}}>
+
 					<Text style={{ color: 'white' }}>Authorize and Add transactions</Text>
 				</TouchableOpacity> : <Text />}
 			</ScrollView>
